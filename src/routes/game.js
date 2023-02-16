@@ -11,6 +11,16 @@ router.get('/game', async (req, res, next) => {
   res.status(200).send(games);
 });
 
+router.get('/game/:id', async (req, res, next) => {
+  const { id } = req.params;
+  console.log('food id is: ', id);
+  const singleGame = await gameModel.findOne({
+    where: {id},
+  });
+  res.status(200).send(singleGame);
+  // Find by Pk
+});
+
 router.post('/game', async (req, res, next) => {
   console.log('this is my body', req.body);
   try {
@@ -23,26 +33,22 @@ router.post('/game', async (req, res, next) => {
 
 router.delete('/game/:id', async (req, res, next) => {
   try {
-    console.log(req.params.id);
-    const deleteGame = await gameModel.destroy({where:{id:req.params.id}});
+    const { id } = req.params;
+    console.log(id);
+    const deleteGame = await gameModel.destroy({where:{id}});
     res.status(200).json(deleteGame[0]);
   } catch (e) {
     next(e);
   }
 });
 
-router.put('/game/:name', async (req, res, next) => {
-  try {
-    console.log(req.params.id);
-    const updateGame = await gameModel.update({name:req.params.name}, {
-      where: {
-        name:'apex',
-      },
-    });
-    res.status(200).send(updateGame);
-  } catch (e) {
-    next(e);
-  }
+router.put('/game/:id', async (req, res, next) => {
+
+  const { id } = req.params;
+  console.log(id);
+  const updateGame = await gameModel.update(req.body, { where: { id } });
+  res.status(200).send(updateGame);
 });
+
 
 module.exports = router;
