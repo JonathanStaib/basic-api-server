@@ -36,7 +36,7 @@ router.delete('/game/:id', async (req, res, next) => {
     const { id } = req.params;
     console.log(id);
     const deleteGame = await gameModel.destroy({where:{id}});
-    res.status(200).json(deleteGame[0]);
+    res.status(200).json(deleteGame);
   } catch (e) {
     next(e);
   }
